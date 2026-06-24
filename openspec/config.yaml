@@ -1,0 +1,20 @@
+schema: spec-driven
+
+context: |
+  Project: Cloud Credits Hub — multi-cloud credit tracking and deployment decisions.
+  Platforms: GCP, AWS, Vercel, Railway, Supabase.
+  Stack: Next.js 14 App Router, TypeScript, Tailwind CSS, Liquid Glass design system.
+  Backend (future): FastAPI + PostgreSQL (Supabase).
+  Conventions: SuaGO engineering standards, OpenSpec SDD, kebab-case files.
+  MVP focus: Dashboard v1 with credit overview, provider directory stub, day/night theme.
+
+rules:
+  proposal:
+    - Include Non-goals section implicitly via Impact
+    - List all 5 cloud providers explicitly
+  spec:
+    - Every requirement MUST have at least one WHEN/THEN scenario
+    - Use SHALL/MUST for normative requirements
+  tasks:
+    - Break frontend work into communication layer tasks
+    - Mark theme system as first frontend task group

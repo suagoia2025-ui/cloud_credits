@@ -1,0 +1,252 @@
+import type {
+  CreditAccount,
+  CreditProgram,
+  DashboardAlert,
+  Project,
+  SecurityCheck,
+} from "@/types/cloud";
+import { buildAlerts, computeSummary, securityScore } from "@/lib/utils/credits";
+
+export const creditAccounts: CreditAccount[] = [
+  {
+    id: "gcp-trial",
+    provider: "gcp",
+    label: "GCP Free Trial",
+    balance: 142,
+    consumed: 158,
+    currency: "USD",
+    expiresAt: "2026-08-15",
+    alertThresholds: { warning: 70, critical: 90 },
+  },
+  {
+    id: "aws-activate",
+    provider: "aws",
+    label: "AWS Activate",
+    balance: 820,
+    consumed: 180,
+    currency: "USD",
+    expiresAt: "2027-01-31",
+    alertThresholds: { warning: 70, critical: 90 },
+  },
+  {
+    id: "vercel-hobby",
+    provider: "vercel",
+    label: "Vercel Hobby + Event Credits",
+    balance: 50,
+    consumed: 0,
+    currency: "USD",
+    expiresAt: null,
+    alertThresholds: { warning: 70, critical: 90 },
+  },
+  {
+    id: "railway-trial",
+    provider: "railway",
+    label: "Railway Trial",
+    balance: 3.2,
+    consumed: 1.8,
+    currency: "USD",
+    expiresAt: "2026-07-01",
+    alertThresholds: { warning: 70, critical: 90 },
+  },
+  {
+    id: "supabase-free",
+    provider: "supabase",
+    label: "Supabase Free Tier",
+    balance: 0,
+    consumed: 0,
+    currency: "USD",
+    expiresAt: null,
+    alertThresholds: { warning: 70, critical: 90 },
+  },
+];
+
+export const projects: Project[] = [
+  {
+    id: "saas-mvp",
+    name: "SaaS MVP",
+    type: "production",
+    providers: ["vercel", "supabase", "railway"],
+    monthlyEstimateUsd: 12,
+  },
+  {
+    id: "ml-pipeline",
+    name: "ML Pipeline",
+    type: "staging",
+    providers: ["gcp", "aws"],
+    monthlyEstimateUsd: 45,
+  },
+  {
+    id: "sec-lab",
+    name: "Security Lab",
+    type: "security",
+    providers: ["aws", "gcp"],
+    monthlyEstimateUsd: 8,
+  },
+];
+
+export const creditPrograms: CreditProgram[] = [
+  {
+    id: "gcp-trial",
+    provider: "gcp",
+    name: "Google Cloud Free Trial",
+    type: "trial",
+    creditAmount: "$300 / 90 días",
+    eligibility: "Cuenta nueva de GCP",
+    officialUrl: "https://cloud.google.com/free",
+  },
+  {
+    id: "gcp-startup",
+    provider: "gcp",
+    name: "Google for Startups Cloud Program",
+    type: "startup",
+    creditAmount: "Hasta $200,000",
+    eligibility: "Startup elegible con partner",
+    officialUrl: "https://cloud.google.com/startup",
+  },
+  {
+    id: "aws-free",
+    provider: "aws",
+    name: "AWS Free Tier",
+    type: "free-tier",
+    creditAmount: "12 meses + always free",
+    eligibility: "Cuenta AWS nueva",
+    officialUrl: "https://aws.amazon.com/free/",
+  },
+  {
+    id: "aws-activate",
+    provider: "aws",
+    name: "AWS Activate",
+    type: "startup",
+    creditAmount: "$1,000 – $100,000",
+    eligibility: "Startup con aceleradora o VC",
+    officialUrl: "https://aws.amazon.com/activate/",
+  },
+  {
+    id: "aws-educate",
+    provider: "aws",
+    name: "AWS Educate",
+    type: "education",
+    creditAmount: "~$100–$200",
+    eligibility: "Estudiante o docente verificado",
+    officialUrl: "https://aws.amazon.com/education/awseducate/",
+  },
+  {
+    id: "vercel-hobby",
+    provider: "vercel",
+    name: "Vercel Hobby Plan",
+    type: "free-tier",
+    creditAmount: "Deploy ilimitado (límites de uso)",
+    eligibility: "Proyectos personales",
+    officialUrl: "https://vercel.com/docs/plans/hobby",
+  },
+  {
+    id: "vercel-startups",
+    provider: "vercel",
+    name: "Vercel for Startups",
+    type: "startup",
+    creditAmount: "Créditos variables",
+    eligibility: "Startup en programa partner",
+    officialUrl: "https://vercel.com/startups",
+  },
+  {
+    id: "railway-trial",
+    provider: "railway",
+    name: "Railway Trial",
+    type: "trial",
+    creditAmount: "$5 / 30 días",
+    eligibility: "Cuenta nueva",
+    officialUrl: "https://railway.app/pricing",
+  },
+  {
+    id: "railway-referral",
+    provider: "railway",
+    name: "Railway Referral",
+    type: "referral",
+    creditAmount: "$5 por referral",
+    eligibility: "Invitar usuarios con link oficial",
+    officialUrl: "https://railway.app/referral",
+  },
+  {
+    id: "supabase-free",
+    provider: "supabase",
+    name: "Supabase Free Tier",
+    type: "free-tier",
+    creditAmount: "2 proyectos gratis",
+    eligibility: "Cuenta Supabase",
+    officialUrl: "https://supabase.com/pricing",
+  },
+];
+
+export const securityChecks: SecurityCheck[] = [
+  {
+    id: "iam-mfa",
+    provider: "global",
+    category: "iam",
+    title: "MFA habilitado en todas las cuentas cloud",
+    passed: true,
+    priority: "high",
+  },
+  {
+    id: "aws-root",
+    provider: "aws",
+    category: "iam",
+    title: "Root account sin access keys",
+    passed: true,
+    priority: "high",
+  },
+  {
+    id: "supabase-rls",
+    provider: "supabase",
+    category: "data",
+    title: "RLS activo en todas las tablas user-facing",
+    passed: false,
+    priority: "high",
+  },
+  {
+    id: "secrets-env",
+    provider: "global",
+    category: "secrets",
+    title: "Secrets solo en variables de entorno",
+    passed: true,
+    priority: "high",
+  },
+  {
+    id: "billing-alerts",
+    provider: "aws",
+    category: "billing",
+    title: "Alarmas de billing configuradas (70/90%)",
+    passed: false,
+    priority: "medium",
+  },
+  {
+    id: "lab-isolation",
+    provider: "gcp",
+    category: "network",
+    title: "Lab de seguridad en proyecto GCP aislado",
+    passed: false,
+    priority: "high",
+  },
+  {
+    id: "cors-prod",
+    provider: "vercel",
+    category: "network",
+    title: "CORS sin wildcard en producción",
+    passed: true,
+    priority: "medium",
+  },
+];
+
+export function getDashboardData() {
+  const summary = computeSummary(creditAccounts, projects);
+  const alerts = buildAlerts(creditAccounts, projects);
+  const security = securityScore(securityChecks);
+
+  return {
+    summary,
+    creditAccounts,
+    projects,
+    alerts,
+    security,
+    securityChecks,
+  };
+}

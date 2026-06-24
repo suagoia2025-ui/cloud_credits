@@ -1,0 +1,90 @@
+/* Liquid Glass — Dark (night) theme (default) */
+:root,
+[data-theme="dark"] {
+  --glass-bg: rgba(255, 255, 255, 0.06);
+  --glass-bg-hover: rgba(255, 255, 255, 0.1);
+  --glass-border: rgba(255, 255, 255, 0.12);
+  --glass-shadow: 0 8px 32px rgba(0, 0, 0, 0.4);
+  --glass-blur: blur(16px);
+
+  --surface-0: #08080d;
+  --surface-1: #0f0f16;
+  --surface-2: #16161f;
+  --surface-3: #1e1e2a;
+
+  --text-primary: rgba(255, 255, 255, 0.92);
+  --text-secondary: rgba(255, 255, 255, 0.62);
+  --text-muted: rgba(255, 255, 255, 0.38);
+
+  --accent: #c8956c;
+  --accent-muted: rgba(200, 149, 108, 0.25);
+
+  --status-success: #4ade80;
+  --status-warning: #fbbf24;
+  --status-error: #f87171;
+  --status-info: #60a5fa;
+
+  --gradient-bg: radial-gradient(
+      ellipse 80% 50% at 50% -20%,
+      rgba(160, 82, 45, 0.18),
+      transparent
+    ),
+    radial-gradient(
+      ellipse 60% 40% at 100% 100%,
+      rgba(66, 133, 244, 0.08),
+      transparent
+    ),
+    var(--surface-0);
+}
+
+/* Liquid Glass — Light (day) theme */
+[data-theme="light"] {
+  --glass-bg: rgba(255, 255, 255, 0.72);
+  --glass-bg-hover: rgba(255, 255, 255, 0.88);
+  --glass-border: rgba(160, 82, 45, 0.15);
+  --glass-shadow: 0 8px 32px rgba(107, 51, 24, 0.1);
+  --glass-blur: blur(16px);
+
+  --surface-0: #f8f6f3;
+  --surface-1: #ffffff;
+  --surface-2: #f0ebe4;
+  --surface-3: #e8dfd4;
+
+  --text-primary: rgba(30, 20, 10, 0.92);
+  --text-secondary: rgba(30, 20, 10, 0.62);
+  --text-muted: rgba(30, 20, 10, 0.42);
+
+  --accent: #a0522d;
+  --accent-muted: rgba(160, 82, 45, 0.12);
+
+  --status-success: #16a34a;
+  --status-warning: #d97706;
+  --status-error: #dc2626;
+  --status-info: #2563eb;
+
+  --gradient-bg: radial-gradient(
+      ellipse 80% 50% at 50% -20%,
+      rgba(200, 149, 108, 0.2),
+      transparent
+    ),
+    radial-gradient(
+      ellipse 60% 40% at 100% 100%,
+      rgba(66, 133, 244, 0.06),
+      transparent
+    ),
+    var(--surface-0);
+}
+
+.glass-card {
+  background: var(--glass-bg);
+  border: 1px solid var(--glass-border);
+  box-shadow: var(--glass-shadow);
+  backdrop-filter: var(--glass-blur);
+  -webkit-backdrop-filter: var(--glass-blur);
+  transition: background 0.25s ease, border-color 0.25s ease,
+    box-shadow 0.25s ease;
+}
+
+.glass-card:hover {
+  background: var(--glass-bg-hover);
+}
